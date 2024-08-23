@@ -1,0 +1,73 @@
+---
+title: "Day 9 interactive"
+author: "Haylee Oyler"
+format: html
+editor: visual
+execute: 
+  warning: false
+  message: false
+editor_options: 
+  chunk_output_type: console
+---
+
+#### Setup
+
+```{r}
+library(kableExtra)
+library(tidyverse)
+library(janitor)
+library(palmerpenguins)
+```
+
+## Making a reproducible example
+
+```{r}
+
+```
+
+
+
+## A few new wrangling tools
+janitor::get_dupes() to check for duplicates
+```{r}
+dupes <- get_dupes(starwars) # Across all variables (exact match across all columns?)
+
+# Check for duplicate values in the `2000` column
+dupes_2 <- starwars %>% 
+  get_dupes(homeworld)
+
+# Check for duplicates in the homeworld and species column
+dupes_3 <- starwars %>% 
+  get_dupes(homeworld, species)
+```
+
+dplyr::across() - operations across columns
+```{r}
+starwars %>% 
+  mutate(across(where(is.character), tolower))
+
+starwars %>% 
+  group_by(homeworld) %>% 
+  summarise(across(where(is.numeric), mean, na.rm = TRUE), count = n())
+
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(across(drat:qsec, mean))
+```
+
+## Tables with kable and kableextra
+
+```{r}
+penguins %>% 
+  group_by(species, island) %>% 
+  summarize(mean_mass = mean(body_mass_g, na.rm = TRUE)) %>% 
+  kable(col.names = c("Species", "Island", "Body mass (g)")) %>% 
+  kable_styling(bootstrap_options = "striped", full_width = FALSE)
+```
+
+## A package for your ggplot theme
+
+```{r}
+# We do this day 10
+```
+
